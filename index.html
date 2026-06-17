@@ -163,7 +163,7 @@
     <div class="lg">📦</div>
     <h2>Medical Tech</h2>
     <p>Accedi per continuare</p>
-    <input id="liEmail" type="text" placeholder="Nome utente" autocomplete="username">
+    <input id="liEmail" type="email" placeholder="Email" autocomplete="username">
     <input id="liPass" type="password" placeholder="Password" autocomplete="current-password">
     <button class="btn" onclick="doLogin()">Entra</button>
     <div id="liErr"></div>
@@ -528,7 +528,7 @@
 <div class="modal-bg" id="mUser">
   <div class="modal">
     <h3 id="mUserTitle">Nuovo utente</h3>
-    <div class="field"><label>Nome utente (per il login)</label><input id="uUsername" placeholder="es. mario"></div>
+    <div class="field"><label>Email (per il login)</label><input id="uUsername" type="email" placeholder="es. mario.rossi@medical-tech.it"></div>
     <div class="field"><label>Nome e cognome</label><input id="uNome" placeholder="es. Mario Rossi"></div>
     <div class="field" id="uPassField"><label>Password</label><input id="uPass" type="text" placeholder="min. 6 caratteri"></div>
     <div class="row2">
@@ -557,7 +557,6 @@ const auth=firebase.auth();
 const fs=firebase.firestore();
 fs.settings({ignoreUndefinedProperties:true});
 const DOCREF=fs.collection('app').doc('data');
-const USER_DOMAIN='@medicaltech.app';
 
 /* ===== DATI ===== */
 const STATO_LBL={deposito:'Conto deposito',visione:'Conto visione',transito:'In transito',proprieta:'Di proprietà'};
@@ -1234,9 +1233,9 @@ function doLogin(){
   const u=document.getElementById('liEmail').value.trim().toLowerCase();
   const p=document.getElementById('liPass').value;
   document.getElementById('liErr').textContent='';
-  if(!u||!p){document.getElementById('liErr').textContent='Inserisci nome utente e password.';return;}
-  auth.signInWithEmailAndPassword(u+USER_DOMAIN,p).catch(err=>{
-    document.getElementById('liErr').textContent='Accesso non riuscito. Controlla nome utente e password.';
+  if(!u||!p){document.getElementById('liErr').textContent='Inserisci email e password.';return;}
+  auth.signInWithEmailAndPassword(u,p).catch(err=>{
+    document.getElementById('liErr').textContent='Accesso non riuscito. Controlla email e password.';
     console.error('Login:',err.code);
   });
 }
@@ -1285,7 +1284,7 @@ function showLogin(){document.body.classList.add('locked');if(unsub){unsub();uns
 auth.onAuthStateChanged(u=>{if(u)startApp();else showLogin();});
 
 /* ===== ACCOUNT + UTENTI ===== */
-function currentUsername(){return auth.currentUser?auth.currentUser.email.split('@')[0]:null;}
+function currentUsername(){return auth.currentUser?auth.currentUser.email:null;}
 function profiloDi(username){return (db.utenti||[]).find(u=>u.username===username);}
 function mioProfilo(){return profiloDi(currentUsername());}
 function isAdmin(){const p=mioProfilo();return p?p.ruolo==='admin':(db.utenti||[]).length===0;}
@@ -1304,7 +1303,7 @@ function mostraAdmin(){if(!isAdmin())return;document.querySelectorAll('.view').f
 function renderAdmin(){
   const us=db.utenti||[];
   document.getElementById('adminList').innerHTML=us.length?us.slice().sort((a,b)=>(a.nome||a.username).localeCompare(b.nome||b.username)).map(u=>
-    '<div class="detailrow" onclick="modificaUtente(\''+u.username+'\')"><span><b>'+(u.nome||u.username)+'</b> <span style="color:var(--muted)">@'+u.username+'</span>'
+    '<div class="detailrow" onclick="modificaUtente(\''+u.username+'\')"><span><b>'+(u.nome||u.username)+'</b> <span style="color:var(--muted)">'+u.username+'</span>'
     +(u.ruolo==='admin'?' <span class="badge gia_sede">admin</span>':'')+(u.attivo===false?' <span class="badge da_ordinare">bloccato</span>':'')
     +'</span><span class="dx">modifica ›</span></div>').join(''):'<div class="empty">Nessun utente.</div>';
 }
@@ -1330,17 +1329,17 @@ function salvaUtente(){
   if(editUser){const u=profiloDi(editUser);u.nome=nome;u.ruolo=ruolo;u.attivo=attivo;salva();chiudi('mUser');renderAdmin();return;}
   const username=document.getElementById('uUsername').value.trim().toLowerCase();
   const pass=document.getElementById('uPass').value;
-  if(!username){alert('Inserisci il nome utente.');return;}
-  if(!/^[a-z0-9._-]+$/.test(username)){alert('Nome utente: solo lettere minuscole, numeri, punto, trattino.');return;}
-  if(profiloDi(username)){alert('Nome utente già esistente.');return;}
+  if(!username){alert('Inserisci l\'email.');return;}
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(username)){alert('Inserisci un\'email valida (es. mario.rossi@medical-tech.it).');return;}
+  if(profiloDi(username)){alert('Questa email è già registrata.');return;}
   if(pass.length<6){alert('Password di almeno 6 caratteri.');return;}
   const sec=firebase.initializeApp(firebaseConfig,'sec_'+Date.now());
-  sec.auth().createUserWithEmailAndPassword(username+USER_DOMAIN,pass)
+  sec.auth().createUserWithEmailAndPassword(username,pass)
     .then(()=>sec.auth().signOut())
     .then(()=>sec.delete())
     .then(()=>{(db.utenti=db.utenti||[]).push({username,nome:nome||username,ruolo,attivo});salva();chiudi('mUser');renderAdmin();alert('Utente creato.');})
     .catch(e=>{try{sec.delete();}catch(_){}
-      alert('Creazione non riuscita: '+(e.code==='auth/email-already-in-use'?'questo nome utente è già registrato.':e.message));});
+      alert('Creazione non riuscita: '+(e.code==='auth/email-already-in-use'?'questa email è già registrata.':e.message));});
 }
 </script>
 </body>
