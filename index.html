@@ -304,7 +304,12 @@
     <h3>Account</h3>
     <p id="acUser" style="color:var(--muted);font-size:14px;margin:-8px 0 16px"></p>
     <button class="btn sec" style="width:100%;margin-bottom:10px" onclick="cambiaMiaPassword()">Cambia la mia password</button>
-    <button class="btn sec" id="acAdminBtn" style="width:100%;margin-bottom:10px" onclick="chiudi('mAccount');mostraAdmin()">Gestione utenti</button>
+    <div id="acAdmin">
+      <button class="btn sec" style="width:100%;margin-bottom:10px" onclick="chiudi('mAccount');mostraAdmin()">Gestione utenti</button>
+      <button class="btn sec" style="width:100%;margin-bottom:10px" onclick="scaricaBackup()">⬇️ Scarica backup</button>
+      <button class="btn sec" style="width:100%;margin-bottom:10px" onclick="document.getElementById('bkFile').click()">⬆️ Ripristina backup</button>
+      <input type="file" id="bkFile" accept=".json,application/json" class="hidden" onchange="ripristinaBackup(this)">
+    </div>
     <button class="btn" style="width:100%" onclick="logout()">Esci</button>
     <button class="btn sec" style="width:100%;margin-top:10px" onclick="chiudi('mAccount')">Chiudi</button>
   </div>
@@ -673,8 +678,35 @@ function mioProfilo(){return profiloDi(currentUsername());}
 function isAdmin(){const p=mioProfilo();return p?p.ruolo==='admin':(db.utenti||[]).length===0;}
 function apriAccount(){
   document.getElementById('acUser').textContent='Accesso come: '+(currentUsername()||'-');
-  document.getElementById('acAdminBtn').style.display=isAdmin()?'block':'none';
+  document.getElementById('acAdmin').style.display=isAdmin()?'block':'none';
   apri('mAccount');
+}
+
+/* ===== BACKUP (solo admin) ===== */
+function scaricaBackup(){
+  if(!isAdmin())return;
+  const blob=new Blob([JSON.stringify({...db,backupDel:new Date().toISOString()},null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+  a.download='medical-tech-backup-'+toISO(new Date())+'.json';
+  document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+}
+function ripristinaBackup(input){
+  const f=input.files[0];input.value='';
+  if(!f||!isAdmin())return;
+  const r=new FileReader();
+  r.onload=()=>{
+    let d;try{d=JSON.parse(r.result);}catch(_){alert('File non valido: non è un backup di Medical Tech.');return;}
+    if(!d||d.v!==VERSIONE||!Array.isArray(d.ospedali)){alert('File non valido: non è un backup di Medical Tech.');return;}
+    const quando=d.backupDel?new Date(d.backupDel).toLocaleString('it-IT'):'data sconosciuta';
+    if(!confirm('Ripristinare il backup del '+quando+' ('+d.ospedali.length+' ospedali)?\n\nTutti i dati attuali (ospedali, strumentari, note) verranno SOSTITUITI. Gli utenti restano quelli attuali.'))return;
+    // gli utenti restano quelli attuali, per non perdere l'accesso da admin
+    db={v:VERSIONE,ospedali:d.ospedali,utenti:db.utenti};applyDefaults();
+    clearTimeout(saveTimer);
+    DOCREF.set(db).then(()=>{chiudi('mAccount');goHome();alert('Backup ripristinato.');})
+      .catch(e=>alert('Ripristino non riuscito: '+e.message));
+  };
+  r.readAsText(f);
 }
 function cambiaMiaPassword(){
   const np=prompt('Nuova password (min. 6 caratteri):');if(np===null)return;
