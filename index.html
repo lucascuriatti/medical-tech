@@ -16,6 +16,7 @@
     --spine:#1a77b9; --spine-bg:#eef6fc; --spine-soft:#d6e8f5;
     --testiere:#6d28d9; --testiere-bg:#f5f3ff; --testiere-soft:#ede9fe;
     --micro:#c2410c; --micro-bg:#fff7ed; --micro-soft:#ffedd5;
+    --neuro:#0f766e; --neuro-bg:#f0fdfa; --neuro-soft:#ccfbf1;
     --shadow:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.04);
   }
   *{box-sizing:border-box}
@@ -72,22 +73,23 @@
   .cnt.spine{background:var(--spine-soft);color:var(--spine)}
   .cnt.testiere{background:var(--testiere-soft);color:var(--testiere)}
   .cnt.microscopi{background:var(--micro-soft);color:var(--micro)}
+  .cnt.neuro{background:var(--neuro-soft);color:var(--neuro)}
 
   /* scheda ospedale */
   .osphead{display:flex;align-items:flex-start;gap:10px}
   .ospnome{font-size:21px;font-weight:700;line-height:1.2}
   .ospcitta{font-size:14px;color:var(--muted);margin-top:2px}
   .seg{display:flex;background:#e6eaef;border-radius:12px;padding:3px;gap:3px;margin:16px 0 0}
-  .seg button{flex:1;border:0;background:none;padding:10px 4px;border-radius:9px;font-size:14px;font-weight:700;color:var(--muted);cursor:pointer;position:relative}
-  .seg button small{font-weight:600;opacity:.75}
+  .seg button{flex:1;min-width:0;border:0;background:none;padding:8px 2px;border-radius:9px;font-size:13px;font-weight:700;color:var(--muted);cursor:pointer;position:relative;line-height:1.2}
+  .seg button small{display:block;font-weight:600;opacity:.75;font-size:11px;min-height:13px}
   .seg button.on{background:#fff;box-shadow:var(--shadow)}
-  .seg button.on.spine{color:var(--spine)} .seg button.on.testiere{color:var(--testiere)} .seg button.on.microscopi{color:var(--micro)}
-  .seg .wdot{position:absolute;top:6px;right:8px;width:8px;height:8px;border-radius:99px;background:var(--rosso)}
+  .seg button.on.spine{color:var(--spine)} .seg button.on.testiere{color:var(--testiere)} .seg button.on.microscopi{color:var(--micro)} .seg button.on.neuro{color:var(--neuro)}
+  .seg .wdot{position:absolute;top:5px;right:6px;width:8px;height:8px;border-radius:99px;background:var(--rosso)}
   .item{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:13px 14px;margin-bottom:9px;box-shadow:var(--shadow);cursor:pointer;display:flex;align-items:flex-start;gap:12px}
   .item:hover{border-color:#cbd5e1}
   .item.warn{border-color:#f0c4c4;background:#fffafa}
   .item .ic{width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
-  .ic.spine{background:var(--spine-bg)} .ic.testiere{background:var(--testiere-bg)} .ic.microscopi{background:var(--micro-bg)}
+  .ic.spine{background:var(--spine-bg)} .ic.testiere{background:var(--testiere-bg)} .ic.microscopi{background:var(--micro-bg)} .ic.neuro{background:var(--neuro-bg)}
   .item .body{flex:1;min-width:0}
   .item .body b{font-size:15px}
   .item .sub{font-size:13px;color:var(--muted);margin-top:3px;line-height:1.5}
@@ -111,10 +113,12 @@
   select.spine{color:var(--spine);background:var(--spine-bg);border-color:var(--spine-soft)}
   select.testiere{color:var(--testiere);background:var(--testiere-bg);border-color:var(--testiere-soft)}
   select.microscopi{color:var(--micro);background:var(--micro-bg);border-color:var(--micro-soft)}
+  select.neuro{color:var(--neuro);background:var(--neuro-bg);border-color:var(--neuro-soft)}
   .nota{border-radius:10px;padding:10px 12px;margin-bottom:8px;border:1px solid;border-left-width:5px;cursor:pointer}
   .nota.spine{background:var(--spine-bg);border-color:var(--spine-soft);border-left-color:var(--spine)}
   .nota.testiere{background:var(--testiere-bg);border-color:var(--testiere-soft);border-left-color:var(--testiere)}
   .nota.microscopi{background:var(--micro-bg);border-color:var(--micro-soft);border-left-color:var(--micro)}
+  .nota.neuro{background:var(--neuro-bg);border-color:var(--neuro-soft);border-left-color:var(--neuro)}
   .nota-h{display:flex;align-items:center;gap:8px;margin-bottom:5px}
   .nota-meta{font-size:11px;color:var(--muted)}
   .nota-t{font-size:14px;line-height:1.45;overflow-wrap:anywhere}
@@ -135,6 +139,8 @@
   .choice button.on[data-v=spine]{border-color:var(--spine);color:var(--spine);background:var(--spine-bg);box-shadow:0 0 0 1px var(--spine)}
   .choice button.on[data-v=testiere]{border-color:var(--testiere);color:var(--testiere);background:var(--testiere-bg);box-shadow:0 0 0 1px var(--testiere)}
   .choice button.on[data-v=microscopi]{border-color:var(--micro);color:var(--micro);background:var(--micro-bg);box-shadow:0 0 0 1px var(--micro)}
+  .choice button.on[data-v=neuro]{border-color:var(--neuro);color:var(--neuro);background:var(--neuro-bg);box-shadow:0 0 0 1px var(--neuro)}
+  #nCat{flex-wrap:wrap} #nCat button{flex:1 1 40%}
   .datebox{background:#f8fafc;border:1px solid var(--line);border-radius:10px;padding:12px 12px 0;margin-bottom:13px}
 </style>
 </head>
@@ -175,6 +181,7 @@
       <button data-sec="spine" onclick="setSez('spine')"></button>
       <button data-sec="testiere" onclick="setSez('testiere')"></button>
       <button data-sec="microscopi" onclick="setSez('microscopi')"></button>
+      <button data-sec="neuro" onclick="setSez('neuro')"></button>
     </div>
     <div class="secthead"><h2 id="secTitle"></h2><button class="btn sm" id="secAdd"></button></div>
     <div id="secList"></div>
@@ -184,7 +191,7 @@
       <textarea id="notaTxt" rows="2" placeholder="Scrivi una nota..."></textarea>
       <div class="noteadd-bar">
         <select id="notaCat" onchange="this.className=this.value">
-          <option value="spine">Spine</option><option value="testiere">Testiere</option><option value="microscopi">Microscopi</option>
+          <option value="spine">Spine</option><option value="testiere">Testiere</option><option value="microscopi">Microscopi</option><option value="neuro">Neuromonitoraggio</option>
         </select>
         <button class="btn sm" onclick="aggiungiNota()">Aggiungi nota</button>
       </div>
@@ -257,6 +264,7 @@
       <div class="field"><label>Data acquisto</label><input type="date" id="tAcq"></div>
       <div class="field"><label>Ultima revisione</label><input type="date" id="tRev"></div>
     </div>
+    <div class="field"><label>Note</label><textarea id="tNote" rows="2" placeholder="Note su questa testiera"></textarea></div>
     <div class="modal-actions">
       <button class="btn danger" id="tDelete" onclick="eliminaTest()">Elimina</button>
       <button class="btn sec" onclick="chiudi('mTest')">Annulla</button>
@@ -271,10 +279,32 @@
     <h3 id="mMicroTitle">Nuovo microscopio</h3>
     <div class="field"><label>Microscopio</label><input id="mModello" list="dlMicro" placeholder="Modello"><datalist id="dlMicro"></datalist></div>
     <div class="field"><label>Data acquisto</label><input type="date" id="mAcq"></div>
+    <div class="field"><label>Note</label><textarea id="mcNote" rows="2" placeholder="Note su questo microscopio"></textarea></div>
     <div class="modal-actions">
       <button class="btn danger" id="mDelete" onclick="eliminaMicro()">Elimina</button>
       <button class="btn sec" onclick="chiudi('mMicro')">Annulla</button>
       <button class="btn" onclick="salvaMicro()">Salva</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL NEUROMONITORAGGIO -->
+<div class="modal-bg" id="mNeuro">
+  <div class="modal">
+    <h3 id="mNeuroTitle">Nuovo neuromonitoraggio</h3>
+    <div class="field"><label>Tipologia</label>
+      <div class="choice" id="eTipo">
+        <button data-v="macchina">Macchina</button>
+        <button data-v="monouso">Monouso</button>
+        <button data-v="service">Service</button>
+      </div>
+    </div>
+    <div class="field"><label>Data acquisto</label><input type="date" id="eAcq"></div>
+    <div class="field"><label>Note</label><textarea id="eNote" rows="2" placeholder="Note su questo elemento"></textarea></div>
+    <div class="modal-actions">
+      <button class="btn danger" id="eDelete" onclick="eliminaNeuro()">Elimina</button>
+      <button class="btn sec" onclick="chiudi('mNeuro')">Annulla</button>
+      <button class="btn" onclick="salvaNeuro()">Salva</button>
     </div>
   </div>
 </div>
@@ -288,6 +318,7 @@
         <button data-v="spine">Spine</button>
         <button data-v="testiere">Testiere</button>
         <button data-v="microscopi">Microscopi</button>
+        <button data-v="neuro">Neuromonitoraggio</button>
       </div>
     </div>
     <div class="field"><label>Testo</label><textarea id="nTesto" rows="4"></textarea></div>
@@ -351,14 +382,16 @@ fs.settings({ignoreUndefinedProperties:true});
 const DOCREF=fs.collection('app').doc('data');
 
 /* ===== DATI ===== */
-// v2: ogni ospedale contiene le sue tre sezioni (spine, testiere, microscopi) e le note comuni
+// v2: ogni ospedale contiene le sue sezioni (spine, testiere, microscopi, neuro) e le note comuni
 const VERSIONE=2;
 const SEZ={
   spine:{lbl:'Spine',add:'+ Strumentario',ic:'🧰'},
   testiere:{lbl:'Testiere',add:'+ Testiera',ic:'🧠'},
-  microscopi:{lbl:'Microscopi',add:'+ Microscopio',ic:'🔬'}
+  microscopi:{lbl:'Microscopi',add:'+ Microscopio',ic:'🔬'},
+  neuro:{lbl:'Neuromonitoraggio',corto:'Neuro',add:'+ Aggiungi',ic:'⚡'}
 };
 const TIPO_LBL={deposito:'Conto deposito',visione:'Conto visione',ufficio:'Da ufficio'};
+const NEURO_TIPI={macchina:'Macchina',monouso:'Monouso',service:'Service'};
 const PREAVVISO_RITIRO=3; // giorni prima del ritiro in cui compare l'avviso giallo
 const SPINE_DEFAULT=['Hygro','Capri','Cascadia','Everest'];
 function blankDb(){return {v:VERSIONE,ospedali:[],utenti:[]};}
@@ -371,7 +404,7 @@ function salva(){
 }
 function applyDefaults(){
   db.ospedali=db.ospedali||[];db.utenti=db.utenti||[];
-  db.ospedali.forEach(o=>{o.spine=o.spine||[];o.testiere=o.testiere||[];o.microscopi=o.microscopi||[];o.note=o.note||[];});
+  db.ospedali.forEach(o=>{o.spine=o.spine||[];o.testiere=o.testiere||[];o.microscopi=o.microscopi||[];o.neuro=o.neuro||[];o.note=o.note||[];});
 }
 
 /* ===== UTILITY ===== */
@@ -402,6 +435,7 @@ function riempiDatalist(id,campo,sez,extra){
 function choiceInit(id,onchange){document.querySelectorAll('#'+id+' button').forEach(b=>b.onclick=()=>{setChoice(id,b.dataset.v);if(onchange)onchange();});}
 function setChoice(id,v){document.querySelectorAll('#'+id+' button').forEach(b=>b.classList.toggle('on',b.dataset.v===v));}
 function getChoice(id){const b=document.querySelector('#'+id+' button.on');return b?b.dataset.v:null;}
+function noteItem(x){return x.note?'<div class="inote">'+esc(x.note).replace(/\n/g,'<br>')+'</div>':'';}
 
 /* ===== NAVIGAZIONE ===== */
 function show(id){
@@ -451,14 +485,16 @@ function renderOsp(){
   document.querySelectorAll('#seg button').forEach(b=>{
     const k=b.dataset.sec;
     b.className=k===sezCorrente?'on '+k:'';
-    b.innerHTML=SEZ[k].lbl+(o[k].length?' <small>'+o[k].length+'</small>':'')+(k==='spine'&&nRitiri(o)?'<span class="wdot"></span>':'');
+    b.innerHTML=(SEZ[k].corto||SEZ[k].lbl)+'<small>'+(o[k].length||'')+'</small>'+(k==='spine'&&nRitiri(o)?'<span class="wdot"></span>':'');
   });
   document.getElementById('secTitle').textContent=SEZ[sezCorrente].lbl;
   const add=document.getElementById('secAdd');add.textContent=SEZ[sezCorrente].add;
-  add.onclick={spine:()=>apriModalStr(null),testiere:()=>apriModalTest(null),microscopi:()=>apriModalMicro(null)}[sezCorrente];
-  const render={spine:strItem,testiere:testItem,microscopi:microItem}[sezCorrente];
-  // gli strumentari da ritirare vanno in cima, poi ordine alfabetico
+  add.onclick={spine:()=>apriModalStr(null),testiere:()=>apriModalTest(null),microscopi:()=>apriModalMicro(null),neuro:()=>apriModalNeuro(null)}[sezCorrente];
+  const render={spine:strItem,testiere:testItem,microscopi:microItem,neuro:neuroItem}[sezCorrente];
+  // gli strumentari da ritirare vanno in cima; il neuromonitoraggio segue l'ordine Macchina/Monouso/Service; il resto è alfabetico
+  const ordNeuro=Object.keys(NEURO_TIPI);
   const items=o[sezCorrente].slice().sort((a,b)=>(sezCorrente==='spine'?daRitirare(b)-daRitirare(a):0)
+    ||(sezCorrente==='neuro'?ordNeuro.indexOf(a.tipo)-ordNeuro.indexOf(b.tipo):0)
     ||(a.nome||a.modello||'').localeCompare(b.nome||b.modello||''));
   document.getElementById('secList').innerHTML=items.map(render).join('')
     ||'<div class="empty">Nessun elemento. Tocca "'+SEZ[sezCorrente].add+'".</div>';
@@ -477,7 +513,7 @@ function strItem(s){
   }
   return '<div class="item'+(rit?' warn':'')+'" onclick="apriModalStr(\''+s.id+'\')"><div class="ic spine">🧰</div><div class="body">'
     +'<b>'+esc(s.nome)+'</b><div class="tags">'+tags+'</div>'+date
-    +(s.note?'<div class="inote">'+esc(s.note).replace(/\n/g,'<br>')+'</div>':'')
+    +noteItem(s)
     +(rit?'<button class="btn sm ritbtn" onclick="event.stopPropagation();ritirato(\''+s.id+'\')">✓ Ritirato</button>':'')
     +'</div></div>';
 }
@@ -486,11 +522,15 @@ function testItem(t){
   if(t.dataAcquisto)r.push('Acquistata <b>'+fmt(t.dataAcquisto)+'</b>');
   if(t.dataRevisione)r.push('Ultima revisione <b>'+fmt(t.dataRevisione)+'</b> ('+tempoFa(t.dataRevisione)+')');
   else r.push('Nessuna revisione registrata');
-  return '<div class="item" onclick="apriModalTest(\''+t.id+'\')"><div class="ic testiere">🧠</div><div class="body"><b>'+esc(t.modello)+'</b><div class="sub">'+r.join('<br>')+'</div></div></div>';
+  return '<div class="item" onclick="apriModalTest(\''+t.id+'\')"><div class="ic testiere">🧠</div><div class="body"><b>'+esc(t.modello)+'</b><div class="sub">'+r.join('<br>')+'</div>'+noteItem(t)+'</div></div>';
 }
 function microItem(m){
   return '<div class="item" onclick="apriModalMicro(\''+m.id+'\')"><div class="ic microscopi">🔬</div><div class="body"><b>'+esc(m.modello)+'</b>'
-    +(m.dataAcquisto?'<div class="sub">Acquistato <b>'+fmt(m.dataAcquisto)+'</b></div>':'')+'</div></div>';
+    +(m.dataAcquisto?'<div class="sub">Acquistato <b>'+fmt(m.dataAcquisto)+'</b></div>':'')+noteItem(m)+'</div></div>';
+}
+function neuroItem(e){
+  return '<div class="item" onclick="apriModalNeuro(\''+e.id+'\')"><div class="ic neuro">⚡</div><div class="body"><b>'+NEURO_TIPI[e.tipo]+'</b>'
+    +(e.dataAcquisto?'<div class="sub">Acquisto <b>'+fmt(e.dataAcquisto)+'</b></div>':'')+noteItem(e)+'</div></div>';
 }
 
 /* ===== OSPEDALE: crea / modifica ===== */
@@ -510,11 +550,11 @@ function salvaOsp(){
   if(!nome){alert('Inserisci il nome dell\'ospedale.');return;}
   if(editOsp){const o=osp(editOsp);o.nome=nome;o.citta=citta;salva();chiudi('mOsp');renderOsp();return;}
   if(db.ospedali.some(o=>o.nome.toLowerCase()===nome.toLowerCase())&&!confirm('Esiste già un ospedale chiamato "'+nome+'". Aggiungerlo comunque?'))return;
-  const o={id:uid(),nome,citta,spine:[],testiere:[],microscopi:[],note:[]};
+  const o={id:uid(),nome,citta,spine:[],testiere:[],microscopi:[],neuro:[],note:[]};
   db.ospedali.push(o);salva();chiudi('mOsp');apriOsp(o.id,'spine');
 }
 function eliminaOsp(){const o=osp(editOsp);if(!o)return;
-  if(!confirm('Eliminare "'+o.nome+'" con tutti i suoi strumentari, testiere, microscopi e note?'))return;
+  if(!confirm('Eliminare "'+o.nome+'" con tutti i suoi strumentari, testiere, microscopi, neuromonitoraggio e note?'))return;
   db.ospedali=db.ospedali.filter(x=>x.id!==o.id);salva();chiudi('mOsp');goHome();}
 
 /* ===== SPINE: strumentari ===== */
@@ -563,12 +603,14 @@ function apriModalTest(id){
   document.getElementById('tModello').value=t?t.modello:'';
   document.getElementById('tAcq').value=t&&t.dataAcquisto||'';
   document.getElementById('tRev').value=t&&t.dataRevisione||'';
+  document.getElementById('tNote').value=t&&t.note||'';
   apri('mTest');
 }
 function salvaTest(){
   const modello=document.getElementById('tModello').value.trim();
   if(!modello){alert('Inserisci la testiera.');return;}
-  const rec={modello,dataAcquisto:document.getElementById('tAcq').value||null,dataRevisione:document.getElementById('tRev').value||null};
+  const rec={modello,dataAcquisto:document.getElementById('tAcq').value||null,dataRevisione:document.getElementById('tRev').value||null,
+    note:document.getElementById('tNote').value.trim()};
   const o=ospCur();
   if(editTest){const i=o.testiere.findIndex(x=>x.id===editTest);if(i>=0)o.testiere[i]={...o.testiere[i],...rec};}
   else{rec.id=uid();o.testiere.push(rec);}
@@ -586,12 +628,13 @@ function apriModalMicro(id){
   document.getElementById('mDelete').style.display=m?'block':'none';
   document.getElementById('mModello').value=m?m.modello:'';
   document.getElementById('mAcq').value=m&&m.dataAcquisto||'';
+  document.getElementById('mcNote').value=m&&m.note||'';
   apri('mMicro');
 }
 function salvaMicro(){
   const modello=document.getElementById('mModello').value.trim();
   if(!modello){alert('Inserisci il microscopio.');return;}
-  const rec={modello,dataAcquisto:document.getElementById('mAcq').value||null};
+  const rec={modello,dataAcquisto:document.getElementById('mAcq').value||null,note:document.getElementById('mcNote').value.trim()};
   const o=ospCur();
   if(editMicro){const i=o.microscopi.findIndex(x=>x.id===editMicro);if(i>=0)o.microscopi[i]={...o.microscopi[i],...rec};}
   else{rec.id=uid();o.microscopi.push(rec);}
@@ -600,7 +643,31 @@ function salvaMicro(){
 function eliminaMicro(){const o=ospCur();if(!confirm('Eliminare il microscopio?'))return;
   o.microscopi=o.microscopi.filter(x=>x.id!==editMicro);salva();chiudi('mMicro');renderOsp();}
 
-/* ===== NOTE (comuni alle tre sezioni, colorate per sezione) ===== */
+/* ===== NEUROMONITORAGGIO (solo Macchina / Monouso / Service) ===== */
+let editNeuro=null;
+choiceInit('eTipo');
+function apriModalNeuro(id){
+  const o=ospCur();editNeuro=id;const e=id?o.neuro.find(x=>x.id===id):null;
+  document.getElementById('mNeuroTitle').textContent=e?'Modifica neuromonitoraggio':'Nuovo neuromonitoraggio';
+  document.getElementById('eDelete').style.display=e?'block':'none';
+  setChoice('eTipo',e?e.tipo:null);
+  document.getElementById('eAcq').value=e&&e.dataAcquisto||'';
+  document.getElementById('eNote').value=e&&e.note||'';
+  apri('mNeuro');
+}
+function salvaNeuro(){
+  const tipo=getChoice('eTipo');
+  if(!tipo){alert('Scegli la tipologia: Macchina, Monouso o Service.');return;}
+  const rec={tipo,dataAcquisto:document.getElementById('eAcq').value||null,note:document.getElementById('eNote').value.trim()};
+  const o=ospCur();
+  if(editNeuro){const i=o.neuro.findIndex(x=>x.id===editNeuro);if(i>=0)o.neuro[i]={...o.neuro[i],...rec};}
+  else{rec.id=uid();o.neuro.push(rec);}
+  salva();chiudi('mNeuro');renderOsp();
+}
+function eliminaNeuro(){const o=ospCur();if(!confirm('Eliminare questo elemento?'))return;
+  o.neuro=o.neuro.filter(x=>x.id!==editNeuro);salva();chiudi('mNeuro');renderOsp();}
+
+/* ===== NOTE (comuni a tutte le sezioni, colorate per sezione) ===== */
 function nomeAutore(email){if(!email)return '';const p=profiloDi(email);return p&&p.nome?p.nome:email.split('@')[0];}
 function renderNote(o){
   const n=o.note.slice().sort((a,b)=>(b.ts||0)-(a.ts||0));
